@@ -11,14 +11,34 @@
  */
 
 #include <iostream>
+#include <fstream>
+#include <cstring>
+#include <cstdint>
 #include "cdk.h"
 
-#define MATRIX_ROWS 6
-#define MATRIX_COLS 5
+#define MATRIX_ROWS 5
+#define MATRIX_COLS 3
 #define BOX_WIDTH 15
-#define MATRIX_NAME_STRING "Test Matrxi"
+#define MATRIX_NAME_STRING "Test Matrix"
 
 using namespace std;
+
+class BinaryFileHeader{
+public:
+ 
+  uint32_t magicNumber;
+  uint32_t versionNumber;
+  uint64_t numRecords;
+};
+
+const int maxRecordStringLength = 25;
+
+class BinaryFileRecord{
+public:
+
+  uint8_t strLength;
+  char stringBuffer[maxRecordStringLength];
+};
 
 int main(){
   WINDOW *window;
@@ -30,6 +50,21 @@ int main(){
   int colWidths[MATRUX_COLS + 1] = {BOX_WIDTH, BOX_WIDTH, BOX_WIDTH, BOX_WIDTH};
   int boxTypes[MATRIX_COLS + 1] = {vMIXED, vMIXED, vMIXED, vMIXED};
 
+  //The Binary File IO is being process
+  ifstream infile;
+
+  BinaryFileHeader *myHeader = new BinaryFileHeader();
+  infile.open("cs3377.bin", ios::in | ios::binary);
+
+  infile.read((char *) myHeader, sizeof(BinaryFileRecord));
+
+  int num = myHeader->numRecords;
+
+
+
+
+
+  //End
   window = initscr();
   cdkscreen = initCDKScreen(window);
 
