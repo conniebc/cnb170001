@@ -11,7 +11,7 @@
 
 CXX = g++
 
-CPPFLAGS = -I /scratch/perkins/inlcude
+CPPFLAGS = -I /scratch/perkins/inlcude -I /scratch/perkins/cs3377.bin
 
 CXXFLAGS = -Wall
 
@@ -29,7 +29,9 @@ OBJS = $(patsubst %.cc,%.o,$(SRCS))
 
 .PHONY: all clean backup
 
-all: $(EXEC)
+all:
+	git pull
+	$(EXEC)
 
 clean:
 	rm -f $(OBJS) *.d *~$(EXEC)

@@ -19,7 +19,7 @@
 #define MATRIX_ROWS 5
 #define MATRIX_COLS 3
 #define BOX_WIDTH 15
-#define MATRIX_NAME_STRING "Test Matrix"
+#define MATRIX_NAME_STRING "Binary File Contents"
 
 using namespace std;
 
@@ -45,8 +45,8 @@ int main(){
   CDKSCREEN *cdkscreen;
   CDKMATRIX *myMatrix;
 
-  const char *rowTitles[MATRIX_ROWS + 1] = {"IGNORE", "R1", "R2", "R3", "R4", "R5", "R6"};
-  const char *columnTitle[MATRIX_COLS + 1] = {"IGNORE", "C1", "C2", "C3"};
+  const char *rowTitles[MATRIX_ROWS + 1] = {"IGNORE", "a", "b", "c"};
+  const char *columnTitle[MATRIX_COLS + 1] = {"IGNORE", "a", "b", "c"};
   int colWidths[MATRUX_COLS + 1] = {BOX_WIDTH, BOX_WIDTH, BOX_WIDTH, BOX_WIDTH};
   int boxTypes[MATRIX_COLS + 1] = {vMIXED, vMIXED, vMIXED, vMIXED};
 
@@ -60,11 +60,15 @@ int main(){
 
   int num = myHeader->numRecords;
 
+  BinaryFileRecord myRecord[num];
 
+  for(int i = 0; i < num; i++){
+    inFile.read((char *) &myRecord[i], sizeof(BinaryFileRecord));
+  }
 
-
-
+  inFile.close();
   //End
+
   window = initscr();
   cdkscreen = initCDKScreen(window);
 
@@ -78,11 +82,27 @@ int main(){
   }
 
   drawCDKMatrix(myMatrix, true);
+  
+  //Set each cell
+  setCDKMatrixCell(myMatrix, 1, 1, myHeader->magicNumber);
+  setCDKMatrixCell(myMatrix, 1, 2, myHeader->versionNumber);
+  setCDKMatrixCell(myMatrix, 1, 3, myHeader->numRecords);
+  setCDKMatrixCell(myMatrix, 2, 1, myRecord->strLength);
+  setCDKMatrixCell(myMatrix, 2, 2, myRecord->stringBuffer);
+  setCDKMatrixCell(myMatrix, 3, 1, myRecord->strLength);
+  setCDKMatrixCell(myMatrix, 3, 2, myRecord->stringBuffer);
+  setCDKMatrixCell(myMatrix, 4, 1, myRecord->strLength);
+  setCDKMatrixCell(myMatrix, 4, 2, myRecord->stringBuffer);
+  setCDKMatrixCell(myMatrix, 5, 1, myRecord-> strLength);
+  setCDKMatrixCell(myMatrix, 5, 2, myRecord->stringBuffer);  
+  //End
 
-  setCDKMatrixCell(myMatrix, 2, 2, "Test Message");
   drawCDKMatrix(myMatrix, true);
 
   sleep(10);
 
   endCDK();
+  delete myHeader;
+
+  return 0;
 }
