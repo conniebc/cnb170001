@@ -11,7 +11,7 @@
 
 CXX = g++
 
-CPPFLAGS = -I /scratch/perkins/inlcude -I /scratch/perkins/cs3377.bin
+CPPFLAGS = -std=c++11 -I /scratch/perkins/inlcude -I /scratch/perkins/cs3377.bin
 
 CXXFLAGS = -Wall
 
